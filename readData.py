@@ -77,7 +77,7 @@ print(factors)
 ###
 
 numOfClients = len(factors['ID'])
-factorsList = factors.keys()
+factorsList = list(factors.keys())
 
 x = np.arange(len(factors) - 1)
 width = 0.25
@@ -89,7 +89,7 @@ results = {'Y': [], 'N': []}
 
 for factor in factorsList[1:]:
     results['N'].append(len(factors[factor]) / numOfClients * 100)
-    results['Y'].append(100 - results['No'])
+    results['Y'].append(100 - results['N'])
 
 for attribute, measurement in results.items():
     offset = width * multiplier
