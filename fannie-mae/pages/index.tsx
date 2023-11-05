@@ -43,6 +43,10 @@ const prisma = new PrismaClient()
   "cs"
   ]
 
+function sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function handleSubmit(userData) {
   try {
     const response = await fetch('/api/createUser', {
@@ -59,11 +63,14 @@ async function handleSubmit(userData) {
 
     const result = await response.json();
     console.log('User created with ID:', result.id);
+    id = result.id
+    sessionStorage.setItem("id", String(id));
   } catch (error) {
     console.error('Error creating user:', error);
   }
 }
 
+let id: number
 let newUserDetails = {
   gmi: 0,
   ccp: 0,
@@ -115,7 +122,9 @@ export default function ButtonUsage() {
       case 'cs':
         newUserDetails.cs = parseFloat(answer)
         handleSubmit(newUserDetails)
-        router.push('/result');
+        setTimeout(() => {
+          router.push('/result');
+        }, 2000);
         break
     }
   };

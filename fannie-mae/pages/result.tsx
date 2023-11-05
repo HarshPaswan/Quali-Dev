@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import Slider from "@mui/material/Slider";
 import Grid from "@mui/material/Grid";
@@ -9,6 +10,67 @@ import Link from 'next/link';
 import { AppBar, Box, Typography, Toolbar, IconButton, TextField, Container, Button, InputAdornment, FormControl, InputLabel, OutlinedInput} from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { withRouter } from 'next/router'
+import { useEffect, useState } from "react"
+import { PrismaClient, Prisma } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+let emailParams = {
+  to: 'renny@rennyhoang.com',
+  subject: 'Quali Report',
+  text: 'Hello, Quali client! You recently used our webservices for housing eligibility! Here are some recommendations based on your results! ',
+  html: '',
+};
+
+async function sendMail(to, subject, text, html) {
+  try {
+    const response = await fetch('/api/sendEmail', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        to,         // recipient's email
+        subject,    // subject of the email
+        text,       // plain text body
+        html,       // HTML body
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Email could not be sent, status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data); // It's good to log this for now to see the response from your API
+    // Handle success
+    alert('Email sent successfully!');
+  } catch (error) {
+    console.error("Failed to send email: ", error);
+  }
+}
+
+let approved = true
+
+let articles = [
+  'https://movement.com/blog/2023/10/6-ways-to-improve-loan-to-value-ratio',
+  'https://www.experian.com/blogs/ask-experian/credit-education/improving-credit/improve-credit-score/',
+  'https://bettermoneyhabits.bankofamerica.com/en/credit/what-is-debt-to-income-ratio',
+  'https://www.investopedia.com/terms/f/front-end-debt-to-income-ratio.asp'
+]
+
+let userDetails = {
+  gmi: 0,
+  ccp: 0,
+  cp: 0,
+  slp: 0,
+  av: 0,
+  dp: 0,
+  la: 0,
+  mmp: 0,
+  cs: 0
+};
 
 const darkTheme = createTheme({
   palette: {
@@ -16,11 +78,96 @@ const darkTheme = createTheme({
   },
 });
 
+function doMath(){
+  // calculate DTI
+  let DTI = (userDetails.ccp + userDetails.cp + userDetails.slp + userDetails.mmp) / userDetails.gmi
+  // calculate LTV
+  let LTV = userDetails.la / userDetails.av
+  let FEDTI = userDetails.mmp / userDetails.gmi
+  // judge credit
+  if (userDetails.cs < 640 || LTV > 0.8 || DTI > 0.43 || FEDTI > 0.28){
+    approved = false
+  }
+  else{
+    approved = true
+  }
+}
+
+function initialMath(){
+  // calculate DTI
+  let DTI = (userDetails.ccp + userDetails.cp + userDetails.slp + userDetails.mmp) / userDetails.gmi
+  // calculate LTV
+  let LTV = userDetails.la / userDetails.av
+  let FEDTI = userDetails.mmp / userDetails.gmi
+  // judge credit
+  if (userDetails.cs < 640){
+    approved = false
+    emailParams.text.concat(articles[1])
+    // add articles [1] to email
+  }
+  else if ( LTV > 0.8){
+    approved = false
+    emailParams.text.concat(articles[0])
+    // add articles[0] to email
+  }
+  else if (DTI > 0.43){
+    approved = false
+    emailParams.text.concat(articles[2])
+    // add articles[2] to email
+  }
+  else if (FEDTI > 0.28){
+    approved = false
+    emailParams.text.concat(articles[3])
+    // add articles[3] to email
+  }
+  else {
+    emailParams.text.concat("However, it seems like you're all set!")
+    approved = true
+  }
+}
+
 function valuetext(value: number) {
     return `${value}`;
 }
+const theme = createTheme({
+  typography: {
+    fontSize: 20,
+  },
+});
+
+async function fetchUser(id) {
+  try {
+    const response = await fetch('/api/readUser', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({id: id})
+    }
+    )
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+    const data = await response.json();
+    userDetails = data
+    console.log(data)
+  } catch (error: any) {
+    console.error('Failed to create user:', error);
+  }
+}
 
 export default function DisplayResult() {
+  let item
+  if (typeof window !== 'undefined'){
+    item = sessionStorage.getItem("id")
+  }
+  console.log(item)
+  let id = parseInt(item)
+  fetchUser(id)
+  setTimeout(() => {
+    initialMath();
+  }, 2000);
+  console.log(emailParams.text)
+  sendMail(emailParams.to, emailParams.subject, emailParams.text, emailParams.html);
+
   const sliderSettings = [
     { min: 10000, max: 100000, step: 5, label: "Gross Monthly Income"},
     { min: 10, max: 90, step: 10, label: "Credit Card Payment"},
@@ -37,10 +184,26 @@ export default function DisplayResult() {
     sliderSettings.map((setting) => (setting.min + setting.max) / 2)
   );
 
+  function updateDetails(){
+    userDetails.gmi = sliderValues[0]
+    userDetails.ccp = sliderValues[1]
+    userDetails.cp = sliderValues[2]
+    userDetails.slp = sliderValues[3]
+    userDetails.av = sliderValues[4]
+    userDetails.dp = sliderValues[5]
+    userDetails.la = sliderValues[6]
+    userDetails.mmp = sliderValues[7]
+    userDetails.cs = sliderValues[8]
+  }
+
   const handleSliderChange = (event, newValue, index) => {
     const newSliderValues = [...sliderValues];
     newSliderValues[index] = newValue;
     setSliderValues(newSliderValues);
+    updateDetails()
+    console.log(userDetails)
+    doMath()
+    console.log(approved)
   };
 
   return (
@@ -57,25 +220,32 @@ export default function DisplayResult() {
           <Button color="inherit">Result</Button>
         </Toolbar>
       </AppBar>
+      <div style={{position: "absolute", top: "50%", left: "8%"}}>
+      <ThemeProvider theme={theme}>
+        { approved ? <Typography variant="h3">Eligible</Typography>
+                   : <Typography variant="h3">Not Eligible</Typography> }
+        </ThemeProvider>
+      </div>
+      <TextField id="outlined-basic" label="Enter your email" variant="outlined" style={{position: "absolute", top: "63%", left: "8%"}}/>
       <Container
         style={{
           position: "absolute",
-          left: "50%",
-          top: "50%",
+          left: "55%",
+          top: "40%",
           transform: "translate(-50%, -50%)",
         }}
         maxWidth="sm"
-      >
-        <Grid container spacing={15}>
+      >  
+        <Grid container rowSpacing={15} columnSpacing={25} mt = {15}>
           {sliderSettings.map((setting, index) => (
             <Grid item xs={4} key={index}>
-              <Box sx={{ width: "200%" }}>
+              <Box sx={{ width: "450%" }}>
                 <Typography variant="body2">{setting.label}</Typography>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box mr = {1}>
                   <Typography variant="caption">{setting.min}</Typography>
                   </Box>
-                  <Slider 
+                  <Slider
                     min={setting.min}
                     max={setting.max}
                     step={setting.step}

@@ -31,13 +31,15 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ question, factor, onSubmi
       </Box>
       <Box mb={2}>
       <FormControl fullWidth>
-        <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-        <OutlinedInput
-            id="outlined-adornment-amount"
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-            label="Amount"
-            onChange={(e) => setAnswer(e.target.value)}
-          />
+        { (factor != "cs")
+        ? <div><InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel><OutlinedInput
+        id="outlined-adornment-amount"
+        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+        label="Amount"
+        onChange={(e) => setAnswer(e.target.value)}
+      /></div>
+          : <div><TextField onChange={(e) => setAnswer(e.target.value)}/></div>
+        }
       </FormControl>
       </Box>
       <Button variant="contained" color="primary" onClick={handleSubmit}>
