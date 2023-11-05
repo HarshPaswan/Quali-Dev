@@ -9,9 +9,13 @@ import {Typography, TextField, Container, Stack, Button} from '@mui/material';
 
 export default function ButtonUsage() {
   return (
-    <Container>
-      <TextField id="outlined-basic" label="enter your bullshit" variant="outlined" />
-      <Button variant = 'contained'> Hello world </Button>
+    <Container style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'
+  }} maxWidth="sm">
+      <h1 className="text-3xl font-bold underline">
+        question goes here
+      </h1>
+      <TextField id="outlined-basic" label="enter your bullshit" className="mr-100" variant="outlined"/>
+      <Button variant='contained'> submit! </Button>
     </Container>
   );
 }
