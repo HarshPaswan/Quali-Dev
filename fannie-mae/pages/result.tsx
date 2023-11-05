@@ -103,24 +103,28 @@ function initialMath(){
   if (userDetails.cs < 640){
     approved = false
     emailParams.text.concat(articles[1])
+    console.log(articles[1])
     console.log(emailParams.text)
     // add articles [1] to email
   }
   else if ( LTV > 0.8){
     approved = false
     emailParams.text.concat(articles[0])
+    console.log(articles[0])
     console.log(emailParams.text)
     // add articles[0] to email
   }
   else if (DTI > 0.43){
     approved = false
     emailParams.text.concat(articles[2])
+    console.log(articles[2])
     console.log(emailParams.text)
     // add articles[2] to email
   }
   else if (FEDTI > 0.28){
     approved = false
     emailParams.text.concat(articles[3])
+    console.log(articles[3])
     console.log(emailParams.text)
   }
   else {
