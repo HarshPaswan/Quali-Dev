@@ -51,7 +51,7 @@ export default function DisplayResult() {
         <Toolbar>
           <Link href="/">
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Home
+              QUALI
             </Typography>
           </Link>
           <Button color="inherit">Result</Button>

@@ -9,6 +9,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import QuestionInput from '../components/QuestionInput'
 import { PrismaClient, Prisma } from '@prisma/client'
+import { useRouter } from 'next/router';
+import Head from 'next/head'
 
 const darkTheme = createTheme({
   palette: {
@@ -76,6 +78,7 @@ let newUserDetails = {
 
 export default function ButtonUsage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const router = useRouter();
 
   const handleAnswerSubmit = (answer: string, factor: string) => {
     // Here you would typically handle the answer, like sending it to a server
@@ -112,18 +115,22 @@ export default function ButtonUsage() {
       case 'cs':
         newUserDetails.cs = parseFloat(answer)
         handleSubmit(newUserDetails)
+        router.push('/result');
         break
     }
   };
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <Head>
+        <title>QUALI</title>
+      </Head>
       <CssBaseline />
     <Box sx={{ flexGrow: 1 }}>
     <AppBar style={{ background: "linear-gradient(to right, #00395d, #7bb0db)" }} position="static">
       <Toolbar>
       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Home
+            QUALI
           </Typography>
           <Link href="/result"><Button color="inherit">Result</Button></Link>
       </Toolbar>
@@ -135,7 +142,7 @@ export default function ButtonUsage() {
           key={title}
           style={{
             display: index === currentQuestionIndex ? 'block' : 'none',
-            transition: 'opacity 1s ease',
+            transition: 'opacity 0.01s ease',
             opacity: index === currentQuestionIndex ? 1 : 0,
             position: 'absolute', left: '50%', top: '50%',
             transform: 'translate(-50%, -50%)'
