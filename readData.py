@@ -1,7 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
-from collections import defaultdict
 
 #{0: 'ID', 1: 'GMI', 2: 'CCP', 3: 'CP', 4: 'SLP', 5: 'AV', 6: 'DP', 7: 'LA', 8: 'MMP', 9: 'CS'}
 factors = {'ID': [], 'GMI': [], 'CCP': [], 'CP': [], 'SLP': [], 'AV': [], 'DP': [], 'LA': [], 'MMP': [], 'CS': []} 
@@ -28,13 +27,15 @@ def judgeDTI(row):
         factors['MMP'].append(ID)
     
 def judgeLTV(row):
-    ID = int(row[0])
+    ID = row[0]
     AV = row[5]
     DP = row[6]
     LA = row[7]
     LTV = LA / AV
     if LTV > 0.8:
         factors['DP'].append(ID)
+        factors['LA'].append(ID)
+        factors['AV'].append(ID)
     
     #LTV = loan amount / appraisal value 
 def judgeCredit(row):
@@ -52,13 +53,14 @@ def criteria(row):
     # list of reasons for failure
     return res
 
-
+i = 0
 with open('data.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)
     header = next(csv_reader)
     for row in csv_reader:
         formattedRow = [float(x) for x in row]
-        ID = int(row[0])
+        formattedRow[0] = int(formattedRow[0])
+        ID = row[0]
 
         # check all reasons
         failures = criteria(formattedRow)
@@ -87,9 +89,11 @@ fig, ax = plt.subplots(layout='constrained')
     
 results = {'Y': [], 'N': []}
 
+i = 0
 for factor in factorsList[1:]:
     results['N'].append(len(factors[factor]) / numOfClients * 100)
-    results['Y'].append(100 - results['N'])
+    results['Y'].append(100 - results['N'][i])
+    i += 1
 
 for attribute, measurement in results.items():
     offset = width * multiplier
@@ -100,8 +104,9 @@ for attribute, measurement in results.items():
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Percentage')
 ax.set_title('Y/N for each factor')
-ax.set_xticks(x + width, factorsList)
+ax.set_xticks(x + width, factorsList[1:])
 ax.legend(loc='upper left', ncols=2)
 ax.set_ylim(0, 250)
 
 plt.show()
+plt.savefig('data.png')
