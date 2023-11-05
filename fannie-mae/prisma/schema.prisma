@@ -12,14 +12,14 @@ datasource db {
 
 model User {
   id            Int    @id @default(autoincrement())
-  gmi           Float
-  ccp           Float
-  cp            Float
-  slp           Float
-  av            Float
-  dp            Float
-  la            Float
-  mmp           Float
-  cs            Float
+  gmi           Float?
+  ccp           Float?
+  cp            Float?
+  slp           Float?
+  av            Float?
+  dp            Float?
+  la            Float?
+  mmp           Float?
+  cs            Float?
   @@map(name: "users")
 }
