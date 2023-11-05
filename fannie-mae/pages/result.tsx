@@ -134,6 +134,11 @@ function initialMath(){
   }
 }
 
+const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault(); // Prevent default form submission
+  sendMail(emailParams.to, emailParams.subject, emailParams.text, emailParams.html);
+};
+
 function valuetext(value: number) {
     return `${value}`;
 }
@@ -163,6 +168,7 @@ async function fetchUser(id) {
 }
 
 export default function DisplayResult() {
+  const [email, setEmail] = useState('');
   let item
   if (typeof window !== 'undefined'){
     item = sessionStorage.getItem("id")
@@ -174,7 +180,6 @@ export default function DisplayResult() {
     initialMath();
   }, 2000);
   console.log(emailParams.text + " This is the text that's actually sent")
-  sendMail(emailParams.to, emailParams.subject, emailParams.text, emailParams.html);
 
   const sliderSettings = [
     { min: 10000, max: 100000, step: 5, label: "Gross Monthly Income"},
@@ -234,7 +239,12 @@ export default function DisplayResult() {
                    : <Typography variant="h3">Not Eligible</Typography> }
         </ThemeProvider>
       </div>
-      <TextField id="outlined-basic" label="Enter your email" variant="outlined" style={{position: "absolute", top: "63%", left: "8%"}}/>
+      <form onSubmit={handleSubmit}>
+      <TextField id="outlined-basic" label="Enter your email" variant="outlined" onChange={(e) => emailParams.to = e.target.value} style={{position: "absolute", top: "63%", left: "8%"}}/>
+      <Button type="submit" variant="contained" color="primary">
+        Send Email
+      </Button>
+      </form>
       <Container
         style={{
           position: "absolute",
