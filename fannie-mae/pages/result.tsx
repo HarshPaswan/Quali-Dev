@@ -51,7 +51,7 @@ async function sendMail(to, subject, text, html) {
   }
 }
 
-let approved = true
+let approved = false
 
 let articles = [
   'It looks like your loan amount to house value ratio is rather high, you should visit the following: https://movement.com/blog/2023/10/6-ways-to-improve-loan-to-value-ratio',
