@@ -5,7 +5,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import {Typography, TextField, Container, Stack, Button} from '@mui/material';
+import {TextField, Container, Button, InputAdornment, FormControl, InputLabel, OutlinedInput} from '@mui/material';
 
 export default function ButtonUsage() {
   return (
@@ -14,8 +14,15 @@ export default function ButtonUsage() {
       <h1 className="text-3xl font-bold underline">
         question goes here
       </h1>
-      <TextField id="outlined-basic" label="enter your bullshit" className="mr-100" variant="outlined"/>
-      <Button variant='contained'> submit! </Button>
+      <FormControl fullWidth sx={{ m: 1 }}>
+          <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            label="Amount"
+          />
+      </FormControl>
+      <Button variant='contained' style={{margin: '8px'}}> Submit! </Button>
     </Container>
   );
 }
