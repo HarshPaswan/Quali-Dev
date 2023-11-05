@@ -54,10 +54,10 @@ async function sendMail(to, subject, text, html) {
 let approved = true
 
 let articles = [
-  'https://movement.com/blog/2023/10/6-ways-to-improve-loan-to-value-ratio',
-  'https://www.experian.com/blogs/ask-experian/credit-education/improving-credit/improve-credit-score/',
-  'https://bettermoneyhabits.bankofamerica.com/en/credit/what-is-debt-to-income-ratio',
-  'https://www.investopedia.com/terms/f/front-end-debt-to-income-ratio.asp'
+  'It looks like your loan amount to house value ratio is rather high, you should visit the following: https://movement.com/blog/2023/10/6-ways-to-improve-loan-to-value-ratio',
+  'Your credit score can be raised just a bit more: https://www.experian.com/blogs/ask-experian/credit-education/improving-credit/improve-credit-score/',
+  'You should work on your debt to income ratio: https://bettermoneyhabits.bankofamerica.com/en/credit/what-is-debt-to-income-ratio',
+  'Be sure to invest some time in learning about the front end debt to income ratio: https://www.investopedia.com/terms/f/front-end-debt-to-income-ratio.asp'
 ]
 
 let userDetails = {
