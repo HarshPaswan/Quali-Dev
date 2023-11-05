@@ -173,7 +173,7 @@ export default function DisplayResult() {
   setTimeout(() => {
     initialMath();
   }, 2000);
-  console.log(emailParams.text)
+  console.log(emailParams.text + " This is the text that's actually sent")
   sendMail(emailParams.to, emailParams.subject, emailParams.text, emailParams.html);
 
   const sliderSettings = [
