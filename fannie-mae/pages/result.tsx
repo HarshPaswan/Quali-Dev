@@ -7,7 +7,14 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Link from 'next/link';
 import { AppBar, Box, Typography, Toolbar, IconButton, TextField, Container, Button, InputAdornment, FormControl, InputLabel, OutlinedInput} from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function valuetext(value: number) {
     return `${value}`;
@@ -37,6 +44,8 @@ export default function DisplayResult() {
   };
 
   return (
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
     <Box sx={{ flexGrow: 1 }}>
       <AppBar style={{ background: "linear-gradient(to right, #00395d, #7bb0db)" }} position="static">
         <Toolbar>
@@ -86,5 +95,6 @@ export default function DisplayResult() {
         </Grid>
       </Container>
     </Box>
+    </ThemeProvider>
   );
 }
