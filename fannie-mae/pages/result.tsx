@@ -241,7 +241,7 @@ export default function DisplayResult() {
       </div>
       <form onSubmit={handleSubmit}>
       <TextField id="outlined-basic" label="Enter your email" variant="outlined" onChange={(e) => emailParams.to = e.target.value} style={{position: "absolute", top: "63%", left: "8%"}}/>
-      <Button type="submit" variant="contained" color="primary">
+      <Button style={{position: "absolute", top: "66%", left: "8%"}} type="submit" variant="contained" color="primary">
         Send Email
       </Button>
       </form>
