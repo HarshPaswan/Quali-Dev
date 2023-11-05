@@ -102,21 +102,21 @@ function initialMath(){
   // judge credit
   if (userDetails.cs < 640){
     approved = false
-    emailParams.text.concat(articles[1])
+    emailParams.text = emailParams.text.concat(articles[1])
     console.log(articles[1])
     console.log(emailParams.text)
     // add articles [1] to email
   }
   else if ( LTV > 0.8){
     approved = false
-    emailParams.text.concat(articles[0])
+    emailParams.text = emailParams.text.concat(articles[0])
     console.log(articles[0])
     console.log(emailParams.text)
     // add articles[0] to email
   }
   else if (DTI > 0.43){
     approved = false
-    emailParams.text.concat(articles[2])
+    emailParams.text = emailParams.text.concat(articles[2])
     console.log(articles[2])
     console.log(emailParams.text)
     // add articles[2] to email
@@ -128,7 +128,7 @@ function initialMath(){
     console.log(emailParams.text)
   }
   else {
-    emailParams.text.concat("However, it seems like you're all set!")
+    emailParams.text = emailParams.text.concat("However, it seems like you're all set!")
     console.log(emailParams.text)
     approved = true
   }
