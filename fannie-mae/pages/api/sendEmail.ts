@@ -17,8 +17,8 @@ export default async function sendEmail(req: NextApiRequest, res: NextApiRespons
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: 'renny@rennyhoang.com',
-      pass: 'PkgE3TVv5ooKKe',
+      //user: 'put your email here',
+      //pass: 'put your password here',
     },
   });
 
