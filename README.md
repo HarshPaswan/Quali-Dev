@@ -1,7 +1,7 @@
 # HackUTD 2023 - Fannie Mae 
 
 # Website Link: https://www.quali.today/
-##Developers: Harsh Paswan, Renny Hoang, Alexander Vu
+## Developers: Harsh Paswan, Renny Hoang, Alexander Vu
 
 # Inspiration
 As immigrants, our parents struggled to buy their first home. The prompt caught our eye as we perused through the many companies. We decided to tackle Fannie Mae's prompt. We were also interested in creating a project that adopted next.js and this was the perfect prompt for the task.
