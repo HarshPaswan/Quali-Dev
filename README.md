@@ -1,4 +1,4 @@
-# HackUTD 2023 - Fannie Mae 
+# Quali
 
 # Website Link: https://www.quali.today/
 ## Developers: Harsh Paswan, Renny Hoang, Alexander Vu
