@@ -3,6 +3,10 @@
 # Website Link: https://www.quali.today/
 ## Developers: Harsh Paswan, Renny Hoang, Alexander Vu
 
+## Project created for HackUTD. Original dataset presented by Fannie Mae 
+*Custom user input supported through database implementation*
+
+
 # Inspiration
 As immigrants, our parents struggled to buy their first home. The prompt caught our eye as we perused through the many companies. We decided to tackle Fannie Mae's prompt. We were also interested in creating a project that adopted next.js and this was the perfect prompt for the task.
 
